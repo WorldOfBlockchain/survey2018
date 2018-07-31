@@ -22,3 +22,4 @@ If you are first join the survey2018 board, please create your own column.
 * You should report the reason why you exceed due time at the meeting. The team members vote on whether you can continue the task.
 ### Github
 * Please create a folder for one theme or one project. For example, **Casper** is in one folder and **Peercoin** is in another folder.
+* Please attach the original files and there PDF format.
