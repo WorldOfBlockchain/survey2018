@@ -29,7 +29,8 @@
 - 現實中：In the case of network latency or deliberate attacks, the proposal mechanism will inevitably occassionally produce multiple children of the same parent.
 - Caspers job is to choose a single child from each parent, thus choosing one canonical chain from the block tree.
 - 為了效率：Casper only considers the subtree of checkpoints forming the checkpoint tree.
-![](/Users/nobel/Desktop/螢幕快照 2018-08-02 17.18.02.png)
+![](https://i.imgur.com/qfSgL5i.png)
+
 
 ### Some Definitions
 - checkpoint:
@@ -37,10 +38,12 @@
 	- every block whose height in the block tree (or block number) is an exact multiple of 100
 - checkpoint height k:
 	- k = block number of checkpoint / 100
-- height h(c) of a checkpoint c:
+- height h\(c\) of a checkpoint c:
 	- the number of elements in the checkpoint chain stretching from c all the way back to root along the parent links <br>
 
-> 在這裡 h(c) = k
+> 在這裡 h\(c\) = k
 
-![](/Users/nobel/Desktop/螢幕快照 2018-08-02 17.19.25.png)
+![](https://i.imgur.com/3pxZYJb.png)
+
+
 
