@@ -33,7 +33,7 @@
 
 
 ### Some Definitions
-- checkpoint:
+- **checkpoint**:
 	- Genesis block(root)
 	- every block whose height in the block tree (or block number) is an exact multiple of 100
 - checkpoint height k:
@@ -45,7 +45,7 @@
 
 ![](https://i.imgur.com/3pxZYJb.png)
 
-- Proof of stake's security derives from the size of the deposits, not the number of validators.
+- Security of Pos derives from the size of the deposits, not the number of validators.
 	- "2/3 of validators": deposit weight fraction, that is, a set of validators whose sum deposit size equals to 2/3 of the total deposit size of the entire set of validators.
 	- 簡單來說，是總錢的2/3，不是總票數2/3
 - vote message 包含了：
@@ -57,22 +57,22 @@
 
 ![](https://imgur.com/6NsF4C0.png)
 
-- supermajority link: 
+- **supermajority link**: 
 	- an ordered pair of checkpoints (a,b), also written a → b, s.t. at least 2/3 of validators (by deposit) have published votes with source a and target b.
 	- can skip checkpoints, i.e., h(b) > h(a) + 1 is fine
 
 ![](https://imgur.com/Oy4uCly.png)
 
-- conflicting: Two checkpoints a and b are called conflicting iff. they are nodes in different branches, i.e., neither is an ancestor or descendant of the other.
-- justified: A checkpoint c is justified if:
+- **conflicting**: Two checkpoints a and b are called conflicting iff. they are nodes in different branches, i.e., neither is an ancestor or descendant of the other.
+- **justified**: A checkpoint c is justified if:
 	1. it is the root
 	2. there exists a supermajority link c' → c where c' is justified
 	- Figure (c) shows a chain of four justified blocks. 
-- finalize: A checkpoint c is called finalized if it is justified and there is a supermajority link c → c' where c' is a direct child of c.
+- **finalize**: A checkpoint c is called finalized if it is justified and there is a supermajority link c → c' where c' is a direct child of c.
 
 ![](https://imgur.com/87TxdJF.png)
 
-- Impossible for two conflicting checkpoints to be finalized without ≥ 1/3 of the validators violating ine of the two Casper Commandments/slashing conditions.(Figure 2)
+- Impossible for two conflicting checkpoints to be finalized without ≥ 1/3 of the validators violating one of the two Casper Commandments/slashing conditions.(Figure 2)
 - 違反 slashing condition的證據會被當成交易上鏈，押金會被沒收且一小部分會被拿來當作發現者/舉報者的獎勵
 	- 要阻止押金被拿走必須要51%攻擊
 
@@ -91,7 +91,7 @@ From these two properties, we can immediately see that, for any height n:
 
 ![](https://imgur.com/noPdcBS.png)
 
-> 這是違反II嗎？
+> 這是違反II嗎？ <br>
 > 附上原文：
 > ![](https://i.imgur.com/Au16OOX.png)
 
