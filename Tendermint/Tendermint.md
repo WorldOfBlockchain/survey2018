@@ -141,7 +141,7 @@
 - Tendermint uses the same mechanism to commit a block as it does to skip.
 
 - Flow graph explained:
-![](Tendermint Round Explained.png)
+![](https://github.com/WorldOfBlockchain/survey2018/blob/master/Tendermint/Tendermint%20Round%20Explained.png)
 
 - Given less than 1/3 of the validators are Byzantine, Tendermint guarantees that validators will never comiit conflicting blocks at the same height.
 
