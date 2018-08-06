@@ -1,4 +1,6 @@
+[Hackmd version](https://hackmd.io/aIOcrjUASFumSa8aH-ZqJQ?view)
 # Casper the Friendly Finality Gadget
+
 - A mechanism which proposes blocks.
 - Casper protects against finalizing two conflicting checkpoints, but **_the attackers could prevent Casper from finalizing any future checkpoints_**.
 
@@ -67,6 +69,7 @@
 - **justified**: A checkpoint c is justified if:
 	1. it is the root
 	2. there exists a supermajority link c' → c where c' is justified
+	
 	- Figure (c) shows a chain of four justified blocks. 
 - **finalize**: A checkpoint c is called finalized if it is justified and there is a supermajority link c → c' where c' is a direct child of c.
 
@@ -96,3 +99,29 @@ From these two properties, we can immediately see that, for any height n:
 > ![](https://i.imgur.com/Au16OOX.png)
 
 ![](https://i.imgur.com/RbINBYI.png)
+
+![](https://imgur.com/gzCZHIg.png)
+
+### Casper's Fork Choice Rule
+- "FOLLOW THE CHAIN CONTAINING THE JUSTIFIED CHECKPOINT OF THE GREATEST HEIGHT" instead of following the standard PoW fork-choice rule of “always build atop the longest chain” 
+
+## Enabling Dynamic Validator Sets
+- **dynasty**: The dynasty of block b is the number of finalized checkpoints in the chain from root to the parent of block b.
+- When a would-be validator’s deposit message is included in a block with dynasty d, then the validator ν will join the validator set at first block with dynasty d + 2. We call d + 2 this validator’s start dynasty, DS(ν).
+- To leave the validator set, a validator must send a “withdraw” message. If validator ν’s withdraw message is included in a block with dynasty d, it similarly leaves the validator set at the first block with dynasty d + 2; we call d + 2 the validator’s end dynasty, DE(ν).
+- If a withdraw message has not yet been included, then DE(ν) = ∞.
+- Once validator ν leaves the validator set, the validator’s public key is forever forbidden from rejoining the validator set. This removes the need to handle multiple start/end dynasties for a single identifier.
+- At the start of the end dynasty, the validator’s deposit is locked for a long period of time, called the withdrawal delay (think “four months’ worth of blocks”), before the deposit is withdrawn. If, during the withdrawal delay, the validator violates any commandment, the deposit is slashed.
+
+![](https://i.imgur.com/0pV1v0U.png)
+
+- Note that in order for the chain to be able to “know” its own current dynasty, we need to restrict our definition of “finalization” slightly:
+
+![](https://imgur.com/kmxwIhH.png)
+
+![](https://i.imgur.com/Eoy6NjX.png)
+
+![](https://imgur.com/QBQVeAD.png)
+
+- The forward and rear validator sets will usually greatly overlap; but if the two validator sets substantially differ, this “stitching” mechanism prevents safety failure in the case when two grandchildren of a finalized checkpoint have different dynasties because the evidence was included in one chain but not the other. For an example of this, see Figure 4.
+
