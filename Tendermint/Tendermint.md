@@ -1,5 +1,8 @@
 ﻿# [Tendermint](https://tendermint.com)
 
+- [Tendermint in a nutshell](https://github.com/mobfoundry/hackatom/blob/master/tminfo.pdf) (pdf file)
+
+
 ## What is Tendermint?
 
 - A software for security.
@@ -47,7 +50,69 @@
 
 #### Motivation
 
-( ... skipped some... )
+- Monolithic design
+	- Most BCs have a monolithic design. BC stack is a single program that handles all the concerns of a decentralized ledger.
+		- P2P connectivity
+		- Mempool broadcasting of TXs
+		- consensus on the most recent block
+		- account balances
+		- Turing-complete contracts
+		- User-level permissions, etc.
+		
+	- Difficult to reuse components of the code and complex maintenance procedures.
+	
+	- Limits users to the language of the BC stack.
+
+- How to break through?
+	- Decoupling the consensus engine and P2P layers from the details of the application state of the particular BC app.
+	- Then we have ABCI
+		- Primary implementation: Tendermint Socket Protocol (TSP, or Teaspoon).
+
+### Intro to ABCI
+- Tendermint Core (the consensus engine) communicates with the application via a socket protocol that satisfies the ABCI.
+
+- Example:
+	- Bitcoin-like Tendermint system
+		- Tendermint core:
+			- Sharing bllocks and TXs between nodes.
+			- The BC.
+		- App:
+			- Maintain UTXO DB.
+			- Validate cryptographic signatures of TXs.
+			- Prevent TXs from spending non-existent TXs.
+			- Allow clients to query UTXO DB.
+
+- 3 primary message types of ABCI:
+	- **DeliverTx**:
+		- Work horse of the app.
+		- Each TX in the BC is delivered with this message.
+		- The app need to validate each TX received with the **DeliverTx** message against the current state, protocol, and the cryptographic credentials of the TX.
+		- A validated TX needs to update the application state. (By binding a value into a key values store, or by updating the UTXO DB, for instance.)
+	
+	- **CheckTx**:
+		- Similar to **DeliverTx**, but only for validating TXs.
+		- Mempool in Core first checks the validity of a TX with **CheckTx**, and only relays valid TXs to its peers.
+		- May differ from app to app.
+	
+	- **Commit**:
+		- To compute a cryptographic commitment to the current app state, to be placed into the next block header.
+		- Simplifies the development of secure lightweight clients.
+
+
+## A Note on Determinism
+
+- Logic for BC TX processing must be deterministic.
+
+- Solidity on Ethereum is a great language of choice for BC apps, for instance.
+
+- But one can also create deterministic apps using existing popular languages by avoiding sources of non-deterministic such as:
+	- RNG (without deterministic seeding)
+	- Race conditions
+	- System clock
+	- Uninitialized memory (C/C++ especially)
+	- Floating point arithmetic
+	- Language features that are random
+
 
 ## Consensus Overview
 
@@ -80,3 +145,11 @@
 - Once a validator precommits a block, it is *lock* on that block. Then,
 	1. it must prevote for the block it is locked on
 	2. it can only unlock, and precommite for a new block, if there is a polka for that block in a later round.
+
+
+## Stake
+- In many systems, not all validators will have the same **weight** in the consensus protocol.
+	- We are actually interested in 1/3 or 2/3 of the total *voting power*.
+
+- PoS currency due to denominated voting power.
+	- Validators can be forced to deposit for the security's sake.
