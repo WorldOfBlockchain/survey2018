@@ -26,9 +26,9 @@
 #### Distributed key-value stores
 - Example: Zookeeper, etcd, consul
 	- Zookeeper: using a version of [Paxos](https://en.wikipedia.org/wiki/Paxos_(computer_science)) (Graphic explanation on work)
-	- etc and consul: using [Raft](https://en.wikipedia.org/wiki/Raft_(computer_science))
+	- Etcd and consul: using [Raft](https://en.wikipedia.org/wiki/Raft_(computer_science))
 
-- Can tolerate to 1/2 crashing-type failure rate, but one Byzantine fault can destroy the system.
+- Can tolerate up to 1/2 crashing-type failure rate, but one Byzantine fault can destroy the system.
 
 - Differences:
 	- Only tolerate up to 1/3 failure rate.
@@ -140,6 +140,9 @@
 
 - Tendermint uses the same mechanism to commit a block as it does to skip.
 
+- Flow graph explained:
+![Round Explained](Tendermint Round Explained.png)
+
 - Given less than 1/3 of the validators are Byzantine, Tendermint guarantees that validators will never comiit conflicting blocks at the same height.
 
 - Once a validator precommits a block, it is *lock* on that block. Then,
@@ -153,3 +156,4 @@
 
 - PoS currency due to denominated voting power.
 	- Validators can be forced to deposit for the security's sake.
+
